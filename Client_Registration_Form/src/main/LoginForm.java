@@ -3,10 +3,17 @@ package main;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -14,7 +21,7 @@ import java.awt.SystemColor;
 
 public class LoginForm {
 
-	private JFrame frame;
+	JFrame frame;
 	private JLabel lblWelcome;
 	private JLabel lblUsername;
 	private JLabel lblPassword;
@@ -22,6 +29,9 @@ public class LoginForm {
 	private JTextField textFieldPassword;
 	private JButton signInButton;
 	private JButton registerButton;
+	
+    static String username;
+    static String password;
 
 	/**
 	 * Launch the application.
@@ -93,8 +103,34 @@ public class LoginForm {
 		signInButton.setFont(new Font("Calibri", Font.BOLD, 14));
 		signInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-				//System.out.println("Hello");
+				// Get the input text as Strings
+				username = textFieldUsername.getText();
+				password = textFieldPassword.getText();
+				
+				// Connection
+				try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo?serverTimezone=UTC&useSSL=false", "root", "RealVanhorn2020");
+						PreparedStatement preparedStatement = connection.prepareStatement("Select * from client where username=? and password=?");){
+					preparedStatement.setString(1, username);
+					preparedStatement.setString(2, password);
+					ResultSet resultSet = preparedStatement.executeQuery();
+					
+					if(resultSet.next()) {
+						System.out.println("Success");
+						frame.dispose();
+						String fname = resultSet.getString("firstname");
+						String lname = resultSet.getString("lastname");
+						String uname = resultSet.getString("username");
+						String email = resultSet.getString("email");
+						ClientHomeScreen clientHomeScreen = new ClientHomeScreen(fname, lname, uname, email);
+						clientHomeScreen.frame.setTitle("JDBC Client Database - " + username);
+						clientHomeScreen.frame.setVisible(true);
+						JOptionPane.showMessageDialog(null, "Success - Welcome " + username);
+					} else {
+						JOptionPane.showMessageDialog(null, "Wrong Username & Password");
+					}
+				} catch (SQLException sqlEx) {
+					sqlEx.printStackTrace();
+                }
 			}
 		});
 		signInButton.setBounds(103, 157, 96, 40);
@@ -106,7 +142,6 @@ public class LoginForm {
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-				//System.out.println("Hello");
                 RegistrationForm registrationForm = new RegistrationForm();
                 registrationForm.frame.setTitle("JDBC Client Database - Enter Details");
                 registrationForm.frame.setVisible(true);
