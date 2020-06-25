@@ -33,8 +33,8 @@ public class LoginForm {
 	private JButton signInButton;
 	private JButton registerButton;
 	
-    static String username;
-    static String password;
+	static String username;
+	static String password;
 
 	/**
 	 * Launch the application.
