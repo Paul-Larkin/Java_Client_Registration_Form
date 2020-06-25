@@ -15,14 +15,12 @@ public class RegistrationForm {
 
 	JFrame frame;
 	
-	
 	private JLabel lblEnterDetails;
 	private JLabel lblFirstName;
 	private JLabel lblLastName;
 	private JLabel lblEmail;
 	private JLabel lblUsername;
 	private JLabel lblPassword;
-	
 	
 	private JTextField textFieldFirstName;
 	private JTextField textFieldLastName;
@@ -33,23 +31,7 @@ public class RegistrationForm {
 	private JButton submitButton;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistrationForm window = new RegistrationForm();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
+	 * Constructor
 	 */
 	public RegistrationForm() {
 		// Frame
@@ -145,8 +127,7 @@ public class RegistrationForm {
 		submitButton.setFont(new Font("Calibri", Font.BOLD, 14));
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-              
+				frame.dispose();  
 			}
 		});
 		submitButton.setBounds(152, 197, 96, 40);
