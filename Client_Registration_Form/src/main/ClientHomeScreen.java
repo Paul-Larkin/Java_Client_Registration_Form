@@ -13,18 +13,12 @@ import javax.swing.JButton;
 
 public class ClientHomeScreen {
 	
-	String firstName;
-	String lastName;
-	String username;
-	String email;
-
 	JFrame frame;
-	
+		
 	JLabel lblFirstName;
 	JLabel lblLastName;
 	JLabel lblUsername;
 	JLabel lblEmail;
-	
 	JLabel lblFirstNameText;
 	JLabel lblLastNameText;
 	JLabel lblUsernameText;
@@ -32,15 +26,20 @@ public class ClientHomeScreen {
 
 	JButton editDetailsButton;
 	JButton logOutButton;
-	private JLabel label;
-	private JLabel label_1;
-	private JLabel label_2;
+	
+	String firstName;
+	String lastName;
+	String username;
+	String email;
 
+	/**
+	 * Constructor
+	 */ 
 	public ClientHomeScreen(String fname, String lname, String uname, String email) {
 		firstName = fname;
 		lastName = lname;
 		username = uname;
-		email = email;
+		this.email = email;
 		
 		// Frame
 		frame = new JFrame();
@@ -94,7 +93,7 @@ public class ClientHomeScreen {
 		lblUsername.setBounds(221, 115, 98, 20);
 		frame.getContentPane().add(lblUsername);
 		
-		// eEmail text Label
+		// Email text Label
 		lblEmail = new JLabel(email);
 		lblEmail.setFont(new Font("Calibri", Font.PLAIN, 14));
 		lblEmail.setBounds(221, 146, 98, 20);
