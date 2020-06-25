@@ -22,11 +22,14 @@ import java.awt.SystemColor;
 public class LoginForm {
 
 	JFrame frame;
+	
 	private JLabel lblWelcome;
 	private JLabel lblUsername;
 	private JLabel lblPassword;
+	
 	private JTextField textFieldUsername;
 	private JTextField textFieldPassword;
+	
 	private JButton signInButton;
 	private JButton registerButton;
 	
@@ -50,7 +53,7 @@ public class LoginForm {
 	}
 
 	/**
-	 * Create the application.
+	 * Constructor
 	 */
 	public LoginForm() {
 		// Frame 
@@ -108,8 +111,9 @@ public class LoginForm {
 				password = textFieldPassword.getText();
 				
 				// Connection
-				try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo?serverTimezone=UTC&useSSL=false", "root", "RealVanhorn2020");
-						PreparedStatement preparedStatement = connection.prepareStatement("Select * from client where username=? and password=?");){
+				try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo?serverTimezone=UTC&useSSL=false", "root", "");
+					PreparedStatement preparedStatement = connection.prepareStatement("Select * from client where username=? and password=?");){
+					
 					preparedStatement.setString(1, username);
 					preparedStatement.setString(2, password);
 					ResultSet resultSet = preparedStatement.executeQuery();
@@ -132,7 +136,7 @@ public class LoginForm {
 					sqlEx.printStackTrace();
                 }
 			}
-		});
+		});		
 		signInButton.setBounds(103, 157, 96, 40);
 		frame.getContentPane().add(signInButton);
 		
