@@ -4,9 +4,17 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -100,11 +108,31 @@ public class ClientHomeScreen {
 		frame.getContentPane().add(lblEmail);
 		
 		// Edit button
-		editDetailsButton = new JButton("Edit Details");
+		editDetailsButton = new JButton("Change Password");
+		editDetailsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String newPassword = JOptionPane.showInputDialog(null,"Enter New Password");
+				
+				try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo?serverTimezone=UTC&useSSL=false", "root", "RealVanhorn2020");
+						PreparedStatement preparedStatement = connection.prepareStatement("UPDATE client SET password =? where username=?");
+						){
+					
+						preparedStatement.setString(1, newPassword);
+						preparedStatement.setString(2, username);
+						int resultSet = preparedStatement.executeUpdate();
+						if(resultSet >= 0) {
+							JOptionPane.showMessageDialog(null, "Password Changed", "Success", 1);
+						}
+					
+					} catch (SQLException sqlEx) {
+						sqlEx.printStackTrace();
+	                }
+			}
+		});
 		editDetailsButton.setFont(new Font("Calibri", Font.BOLD, 14));
 		editDetailsButton.setBounds(88, 177, 118, 40);
 		frame.getContentPane().add(editDetailsButton);
-		
+
 		// Log out button
 		logOutButton = new JButton("Log Out");
 		logOutButton.setFont(new Font("Calibri", Font.BOLD, 14));
