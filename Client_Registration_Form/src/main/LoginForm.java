@@ -155,3 +155,13 @@ public class LoginForm {
 		frame.getContentPane().add(registerButton);
 	}
 }
+
+/*
+CREATE TABLE client( 
+  	firstname varchar(250) NOT NULL,
+	lastname varchar(250) NOT NULL,
+	email varchar(250) NOT NULL unique,
+	username varchar(250) NOT NULL unique,
+  	password varchar(250)
+);
+*/
