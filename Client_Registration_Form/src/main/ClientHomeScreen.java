@@ -113,10 +113,9 @@ public class ClientHomeScreen {
 			public void actionPerformed(ActionEvent e) {
 				String newPassword = JOptionPane.showInputDialog(null,"Enter New Password");
 				
-				try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo?serverTimezone=UTC&useSSL=false", "root", "RealVanhorn2020");
+				try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo?serverTimezone=UTC&useSSL=false", "root", "");
 						PreparedStatement preparedStatement = connection.prepareStatement("UPDATE client SET password =? where username=?");
 						){
-					
 						preparedStatement.setString(1, newPassword);
 						preparedStatement.setString(2, username);
 						int resultSet = preparedStatement.executeUpdate();
