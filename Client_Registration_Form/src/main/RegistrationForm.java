@@ -5,10 +5,15 @@ import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class RegistrationForm {
@@ -127,7 +132,34 @@ public class RegistrationForm {
 		submitButton.setFont(new Font("Calibri", Font.BOLD, 14));
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.dispose();  
+				String fname = textFieldFirstName.getText();
+				String lname = textFieldLastName.getText();
+				String email = textFieldEmail.getText();
+				String uname = textFieldUsername.getText();
+				String pword = textFieldPassword.getText();
+				
+				try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo?serverTimezone=UTC&useSSL=false", "root", "");
+						PreparedStatement preparedStatement = connection.prepareStatement("INSERT into client (firstname, lastname, email, username, password) VALUES (?,?,?,?,?)");
+						){
+					
+						preparedStatement.setString(1, fname);
+						preparedStatement.setString(2, lname);
+						preparedStatement.setString(3, email);
+						preparedStatement.setString(4, uname);
+						preparedStatement.setString(5, pword);
+
+						int resultSet = preparedStatement.executeUpdate();
+						if(resultSet >= 0) {
+							ClientHomeScreen clientHomeScreen = new ClientHomeScreen(fname, lname, uname, email);
+							clientHomeScreen.frame.setTitle("JDBC Client Database - " + uname);
+							clientHomeScreen.frame.setVisible(true);
+							JOptionPane.showMessageDialog(null, "Account Registered", "Success", 1);
+							
+						}
+					
+					} catch (SQLException sqlEx) {
+						sqlEx.printStackTrace();
+	                }
 			}
 		});
 		submitButton.setBounds(152, 197, 96, 40);
